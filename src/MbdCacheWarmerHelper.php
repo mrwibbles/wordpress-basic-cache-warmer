@@ -117,26 +117,28 @@ class MbdCacheWarmerHelper
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
         $result = curl_exec($ch);
+
+        if ($result === false) {
+            throw new \Exception(curl_error($ch), curl_errno($ch));
+        }
+
         curl_close($ch);
 
         return $result;
-//        $arrContextOptions = array(
-//            "ssl" => array(
-//                "verify_peer" => false,
-//                "verify_peer_name" => false,
-//            )
-//        );
-//
-//        $context = stream_context_create($arrContextOptions);
-//        return file_get_contents($url,false, $context);
     }
 
     public function getURLSFromXML($data): array
     {
         $xml = simplexml_load_string($data);
+//        $this->writeToLog(json_encode($xml));
         $urls = [];
         foreach ($xml->sitemap as $sitemap) {
             $urls[] = $sitemap->loc;
