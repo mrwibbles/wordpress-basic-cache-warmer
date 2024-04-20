@@ -1,0 +1,20 @@
+{
+    "name": "mbd/cache-warmer-wordpress",
+    "description": "Cache Warmer For WordPress",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Mbd\\CacheWarmerWordpress\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alex Glover",
+            "email": "hello@alexglover.co.uk"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "chrome-php/chrome": "^1.11"
+    }
+}

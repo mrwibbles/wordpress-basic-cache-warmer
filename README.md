@@ -4,7 +4,7 @@
 * PHP 8.1
 * Yoast SEO plugin installed & configured to output a sitemap.xml file available at `yoursite.com/sitemap.xml`
 * Should work on any WordPress version, but untested
-
+* For development or monitoring the cache warmer, this plugin: WP Crontrol (https://wordpress.org/plugins/wp-crontrol/) is very useful, and can also be used to trigger the warmer manually
 
 
 ## How to make it work
