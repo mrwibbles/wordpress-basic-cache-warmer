@@ -14,19 +14,18 @@
  * Text Domain:       mbd-cache-warmer-plugin
  * Domain Path:       /languages
  */
+require __DIR__ . '/lib/MbdCacheWarmerSetup.php';
 
-
-require_once __DIR__ . '/vendor/autoload.php';
-
-
-$cacheWarmer = new \Mbd\CacheWarmerWordpress\MbdCacheWarmerSetup();
+$cacheWarmer = new MbdCacheWarmerSetup();
 $cacheWarmer->install();
 
 register_deactivation_hook( __FILE__, 'deactivateMbdCacheWarmerCron');
 
 function deactivateMbdCacheWarmerCron(): void
 {
-    $helper = new \Mbd\CacheWarmerWordpress\MbdCacheWarmerHelper();
+    require __DIR__ . '/lib/MbdCacheWarmerHelper.php';
+
+    $helper = new MbdCacheWarmerHelper();
 
     $helper->writeToLog('deactivate worked');
     $timestamp = wp_next_scheduled('mbd_cache_warmer');
