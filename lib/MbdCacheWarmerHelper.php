@@ -30,15 +30,7 @@ class MbdCacheWarmerHelper
 
     public function warmer($url): void
     {
-        $arrContextOptions = array(
-            "ssl" => array(
-                "verify_peer" => false,
-                "verify_peer_name" => false,
-            )
-        );
-
-        $context = stream_context_create($arrContextOptions);
-        $page = file_get_contents($url,false, $context);
+        $page = $this->getDataFromURL($url);
         $this->warmPageAssets($page);
         $this->writeToLog('WARMED URL: ' . $url);
     }
@@ -68,6 +60,10 @@ class MbdCacheWarmerHelper
 
         foreach ($assetsToWarm as $url) {
             if($url) {
+                if (!str_starts_with($url, 'http')) {
+                    $url = get_site_url() . $url;
+                }
+
                 $this->getDataFromURL($url);
                 $this->writeToLog('WARMED ASSET: ' . $url);
             }
@@ -86,11 +82,6 @@ class MbdCacheWarmerHelper
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         $result = curl_exec($ch);
-
-        if ($result === false) {
-            throw new \Exception(curl_error($ch), curl_errno($ch));
-        }
-
         curl_close($ch);
 
         return $result;
