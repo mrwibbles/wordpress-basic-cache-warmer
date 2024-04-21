@@ -149,11 +149,12 @@ class MbdCacheWarmerHelper
 
     public function writeToLog(string $log): void
     {
+        $date = "[" . date('d-m-Y h:i:s a', time()) . "] -- ";
         if (true === WP_DEBUG) {
             if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
+                error_log($date . print_r($log, true). "\n", 3, __DIR__ . "/mbd-cache-plugin-errors.log");
             } else {
-                error_log($log);
+                error_log($date . $log. "\n", 3, __DIR__ . "/mbd-cache-plugin-errors.log");
             }
         }
     }
