@@ -76,15 +76,24 @@ class MbdCacheWarmerHelper
 
     public function getDataFromURL($url): bool|string
     {
-        $arrContextOptions = array(
-            "ssl" => array(
-                "verify_peer" => false,
-                "verify_peer_name" => false,
-            )
-        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        $context = stream_context_create($arrContextOptions);
-        return file_get_contents($url,false, $context);
+        $result = curl_exec($ch);
+
+        if ($result === false) {
+            throw new \Exception(curl_error($ch), curl_errno($ch));
+        }
+
+        curl_close($ch);
+
+        return $result;
     }
 
     public function getURLSFromXML($data): array
