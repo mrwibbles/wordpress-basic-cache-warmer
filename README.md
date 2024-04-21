@@ -1,7 +1,7 @@
 # Cache Warmer for WordPress
 
 ## Plugin requirements:
-* PHP 8.1
+* PHP 8.1, may work on previous PHP versions but untested
 * Yoast SEO plugin installed & configured to output a sitemap.xml file available at `yoursite.com/sitemap.xml`
 * Should work on any WordPress version, but untested
 
